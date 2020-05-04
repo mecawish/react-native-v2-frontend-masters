@@ -3,6 +3,8 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import PalettePreview from '../components/PalettePreview';
 
+const URL = 'https://color-palette-api.kadikraman.now.sh/palettes';
+
 const Home = ({ navigation }) => {
   const [colorPalettes, setColorPalettes] = useState();
 
@@ -16,7 +18,7 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     fetchPalettes();
-  }, [fetchPalettes]);
+  }, []);
 
   return (
     <FlatList
