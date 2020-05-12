@@ -11,9 +11,20 @@ import PalettePreview from '../components/PalettePreview';
 
 const URL = 'https://color-palette-api.kadikraman.now.sh/palettes';
 
-const Home = ({ navigation }) => {
+const Home = ({ navigation, route }) => {
+  const newPalette = route.params ? route.params.newPalette : null;
   const [colorPalettes, setColorPalettes] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useEffect(() => {
+    fetchPalettes();
+  }, []);
+
+  useEffect(() => {
+    if (newPalette) {
+      setColorPalettes(current => [newPalette, ...current]);
+    }
+  }, [newPalette]);
 
   const fetchPalettes = useCallback(async () => {
     const response = await fetch(URL);
@@ -21,10 +32,6 @@ const Home = ({ navigation }) => {
       const palettes = await response.json();
       setColorPalettes(palettes);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchPalettes();
   }, []);
 
   const handleRefresh = useCallback(async () => {
@@ -41,7 +48,7 @@ const Home = ({ navigation }) => {
         style={styles.button}
         onPress={() => navigation.navigate('AddNewPalette')}
       >
-        <Text style={styles.buttonText}>Add a Color Scheme</Text>
+        <Text style={styles.buttonText}>Add a color scheme</Text>
       </TouchableOpacity>
       <FlatList
         refreshControl={
